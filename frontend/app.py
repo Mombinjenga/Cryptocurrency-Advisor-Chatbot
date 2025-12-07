@@ -5,10 +5,12 @@ from tkinter import scrolledtext
 from datetime import datetime
 from PIL import Image, ImageTk  # For displaying bot icon
 
-# Placeholder function for chatbot response
-# Later, replace this with a call to backend/chatbot.py
+# Import the backend chatbot function
+from backend.chatbot import get_response
+
+# Replace placeholder function with backend call
 def get_bot_response(user_input):
-    return f"Bot: I’ll answer '{user_input}' from the dataset soon!"
+    return get_response(user_input)
 
 # Function to send user message
 def send_message():
@@ -19,7 +21,7 @@ def send_message():
         chat_area.config(state='normal')  # Enable editing
         chat_area.insert(tk.END, f"You ({timestamp}): {user_msg}\n", "user")
         
-        # Get bot response
+        # Get bot response from backend
         bot_msg = get_bot_response(user_msg)
         chat_area.insert(tk.END, f"{bot_msg}\n\n", "bot")
         
