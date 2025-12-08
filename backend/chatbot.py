@@ -1,43 +1,57 @@
-# backend/chatbot.py
-
 import pandas as pd
-from backend.dataset_handler import load_dataset, query_dataset  # Placeholder for future dataset functions
 
-# Load dataset when module is imported
-# For now, dataset loading is optional; you can replace this later
-try:
-    crypto_data = load_dataset()  # You will define this in dataset_handler.py
-except Exception:
-    crypto_data = None
+class CryptoChatbot:
+    def __init__(self):
+        # Load dataset
+        self.data = pd.read_csv("data/crypto_data.csv")
 
+        # Normalize column names for consistency
+        self.data.columns = [col.lower().strip() for col in self.data.columns]
 
-def get_response(user_input: str) -> str:
-    """
-    Main function to process user input and return chatbot response.
-    For now, returns a dummy response. Later, it will query crypto_data.
-    """
-    user_input = user_input.lower().strip()
+        # Filter only BTC, ETH, ADA (if the dataset contains many coins)
+        wanted = ["bitcoin", "btc", "ethereum", "eth", "cardano", "ada"]
+        self.filtered = self.data[self.data['name'].str.lower().isin(wanted) |
+                                  self.data['symbol'].str.lower().isin(wanted)]
 
-    # Example of simple keyword response
-    if "price" in user_input:
-        return "Bot: I can tell you the price of any crypto once the dataset is connected."
-    elif "help" in user_input:
-        return "Bot: You can ask me about crypto prices, market trends, and recommendations."
-    else:
-        return "Bot: Sorry, I didn't understand that. Try asking about crypto prices or trends."
+    def get_response(self, user_input):
+        user_input = user_input.lower()
 
+        # Basic rule-based responses
+        if "bitcoin" in user_input or "btc" in user_input:
+            return self.get_coin_info("bitcoin")
+        
+        if "ethereum" in user_input or "eth" in user_input:
+            return self.get_coin_info("ethereum")
 
-# Optional: additional helper functions for dataset queries
-def get_crypto_price(coin_name: str) -> str:
-    """
-    Example function to query dataset for a specific coin's price.
-    """
-    if crypto_data is None:
-        return "Bot: Dataset not loaded yet."
+        if "cardano" in user_input or "ada" in user_input:
+            return self.get_coin_info("cardano")
 
-    coin_row = crypto_data[crypto_data['coin_name'].str.lower() == coin_name.lower()]
-    if not coin_row.empty:
-        price = coin_row['price'].values[0]
-        return f"Bot: The current price of {coin_name} is ${price}"
-    else:
-        return f"Bot: I couldn't find data for {coin_name}"
+        # fallback
+        return "I can help with Bitcoin, Ethereum, and Cardano. Ask me about their trends, sustainability, or long-term performance!"
+
+    def get_coin_info(self, coin):
+        # Find the row
+        row = self.filtered[self.filtered['name'].str.lower() == coin]
+        if row.empty:
+            return f"Sorry, I don’t have data for {coin}."
+
+        row = row.iloc[0]  # take first match
+
+        # Example values the dataset might have
+        symbol = row.get("symbol", "N/A")
+        market_cap = row.get("market_cap", "N/A")
+        sustainability = row.get("sustainability", "N/A")
+        long_term = row.get("long_term_rating", "N/A")
+
+        return (
+            f"{coin.capitalize()} ({symbol}) info:\n"
+            f"- Market Cap: {market_cap}\n"
+            f"- Sustainability: {sustainability}\n"
+            f"- Long-term rating: {long_term}\n"
+        )
+
+# For frontend usage:
+bot = CryptoChatbot()
+
+def get_response(msg):
+    return bot.get_response(msg)
