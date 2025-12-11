@@ -1,37 +1,47 @@
-# CryptoBuddy Chatbot
+# 📘 Cryptocurrency Advisor Chatbot
 
-CryptoBuddy is a simple Python chatbot that gives advice on cryptocurrency trends, sustainability, and long-term investment options. It uses basic rule-based logic to answer user queries about Bitcoin, Ethereum, and Cardano.
+## 📌 Project Overview
+The **Cryptocurrency Advisor Chatbot** is an intelligent system that analyzes Bitcoin historical data, predicts next-day price movements, evaluates short-term trends, and generates data-driven insights for users. It combines machine learning, time-series analysis, and a simple conversational interface.
 
-## Features
+---
 
-- Recommends coins based on sustainability and eco-friendliness
-- Identifies trending coins
-- Suggests options for long-term growth
-- Friendly, conversational responses
+## 📊 Dataset Description
+The dataset contains daily Bitcoin historical price data, including:
 
-## Getting Started
+- `date`  
+- `open`, `high`, `low`, `close`  
+- `volume`  
+- `market cap`  
+- `close_ratio`  
+- `spread`  
+- `ranknow`  
 
-1. **Clone or download this repository.**
-2. **Install Python 3.x** if you haven’t already.
-3. **Run the chatbot:**
-   ```
-   python index.py
-   ```
-4. **Interact with CryptoBuddy** in your terminal. Type `exit` or `quit` to stop.
+It supports:
 
-## Example Interaction
+- Price trend analysis  
+- Price prediction  
+- Volatility insights  
+- Direction forecasting  
 
-![Chatbot Screenshot](screenshot.png)
+---
 
-## Files
+## 🤖 Machine Learning Tasks
 
-- `index.py` — Main chatbot logic
-- `README.md` — Project overview
+### 1️⃣ Bitcoin Price Prediction
+Predicts the next-day closing price using **RandomForest** or **LSTM**.
 
-## Screenshot
+### 2️⃣ Historical Trend Analysis
+Computes indicators such as:
 
-A screenshot of the chatbot running in the terminal.
+- Moving averages  
+- Volatility  
+- Returns  
+- Momentum  
+- Spread %  
 
-## Summary
+### 3️⃣ Data-Driven Advice Generation
+Outputs insights like:
 
-CryptoBuddy mimics basic AI decision-making by using rule-based logic to analyze user queries and select responses. It matches keywords to predefined rules, allowing it to recommend cryptocurrencies based on trends, sustainability, or investment goals, similar to how simple expert systems work in artificial intelligence.
+- “Short-term bullish trend detected.”  
+- “Volatility is increasing.”  
+- “Neutral movement expected.”  
