@@ -1,57 +1,23 @@
-import pandas as pd
+# Temporary placeholder until we finish the full ML logic in Colab
+def get_response(user_input: str) -> str:
+    """
+    This is a dummy response for testing the Streamlit frontend.
+    We'll replace it later with real ML predictions and advice.
+    """
+    user_input = user_input.lower()
 
-class CryptoChatbot:
-    def __init__(self):
-        # Load dataset
-        self.data = pd.read_csv("data/crypto_data.csv")
-
-        # Normalize column names for consistency
-        self.data.columns = [col.lower().strip() for col in self.data.columns]
-
-        # Filter only BTC, ETH, ADA (if the dataset contains many coins)
-        wanted = ["bitcoin", "btc", "ethereum", "eth", "cardano", "ada"]
-        self.filtered = self.data[self.data['name'].str.lower().isin(wanted) |
-                                  self.data['symbol'].str.lower().isin(wanted)]
-
-    def get_response(self, user_input):
-        user_input = user_input.lower()
-
-        # Basic rule-based responses
-        if "bitcoin" in user_input or "btc" in user_input:
-            return self.get_coin_info("bitcoin")
-        
-        if "ethereum" in user_input or "eth" in user_input:
-            return self.get_coin_info("ethereum")
-
-        if "cardano" in user_input or "ada" in user_input:
-            return self.get_coin_info("cardano")
-
-        # fallback
-        return "I can help with Bitcoin, Ethereum, and Cardano. Ask me about their trends, sustainability, or long-term performance!"
-
-    def get_coin_info(self, coin):
-        # Find the row
-        row = self.filtered[self.filtered['name'].str.lower() == coin]
-        if row.empty:
-            return f"Sorry, I don’t have data for {coin}."
-
-        row = row.iloc[0]  # take first match
-
-        # Example values the dataset might have
-        symbol = row.get("symbol", "N/A")
-        market_cap = row.get("market_cap", "N/A")
-        sustainability = row.get("sustainability", "N/A")
-        long_term = row.get("long_term_rating", "N/A")
-
-        return (
-            f"{coin.capitalize()} ({symbol}) info:\n"
-            f"- Market Cap: {market_cap}\n"
-            f"- Sustainability: {sustainability}\n"
-            f"- Long-term rating: {long_term}\n"
-        )
-
-# For frontend usage:
-bot = CryptoChatbot()
-
-def get_response(msg):
-    return bot.get_response(msg)
+    if "hello" in user_input or "hi" in user_input:
+        return "Hey there! 👋 I'm your Crypto Advisor. Ask me about Bitcoin price, trends, or predictions!"
+    
+    elif "price" in user_input or "how much" in user_input:
+        return "As of December 16, 2025, Bitcoin is trading around **$92,500**.\n\nShort-term trend: Slightly bearish due to market correction, but strong support at $90K. 🚀"
+    
+    elif "predict" in user_input or "tomorrow" in user_input:
+        return "🔮 **Next-day prediction (placeholder)**:\nClosing price expected around **$93,200** (+0.8%).\nModel confidence: Medium.\n\nVolatility is moderate — good entry point for long-term holders."
+    
+    elif "bullish" in user_input or "bearish" in user_input:
+        return "Current indicators:\n• Price above 21-day MA → **Mildly bullish**\n• RSI at 55 → Not overbought\n• Volatility increasing slightly\n\nOverall: Neutral to bullish short-term."
+    
+    else:
+        return ("I'm still learning! 🤖\n\nFor now, try asking:\n• 'What's the current Bitcoin price?'\n• 'Will it go up tomorrow?'\n• 'Is the trend bullish?'\n\n"
+                "Full AI predictions coming soon after we train the model in Colab!")
